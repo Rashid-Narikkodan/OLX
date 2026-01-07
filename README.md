@@ -1,74 +1,63 @@
-# React + TypeScript + Vite
+# 🚀 OLX Clone Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **marketplace web app** inspired by OLX, built with **React (Vite) + TypeScript + Tailwind CSS + Firebase**.  
+This project demonstrates a scalable **feature/domain-based architecture** suitable for production.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Features
 
-## React Compiler
+- 🔑 User Authentication (Login / Register / Logout) with **Firebase Auth**  
+- 🛒 Browse products with categories and search  
+- 📄 Product Details Page  
+- 🖼️ Post ads with images (Firebase Storage)  
+- ❤️ Add products to favorites  
+- 📱 Fully responsive for mobile and desktop  
+- ⚡ Fast and lightweight with **Vite + Tailwind CSS**  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend:** React 19 + TypeScript + Vite  
+- **Styling:** Tailwind CSS  
+- **Backend / Infra:** Firebase (Auth, Firestore, Storage)  
+- **Routing:** React Router  
+- **State Management:** React Context + Hooks  
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ⚡ Project Overview
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+This is a **frontend-only application** for a marketplace:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Users can **register/login** and manage their account.  
+- Users can **browse, search, and view products**.  
+- Users can **post ads with multiple images**.  
+- Data is stored in **Firebase Firestore**, images in **Firebase Storage**, and authentication handled by **Firebase Auth**.  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The project uses **domain/feature-based architecture**, meaning each feature (Auth, Products, Post Ads, Profile) owns its own **pages, components, and services** for scalability and maintainability.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# OLX
+---
+
+## 🚀 Getting Started
+
+1. Clone the repo  
+2. Install dependencies: `pnpm install` or `npm install`  
+3. Add your Firebase config to `.env`  
+4. Run dev server: `pnpm dev` or `npm run dev`  
+
+---
+
+## 🔮 Future Enhancements
+
+- 🏷️ Search & filter products  
+- 🔔 Real-time notifications  
+- 📝 Pagination & infinite scrolling  
+- 💳 Payment integration for featured ads  
+
+---
+
+## 📄 License
+
+This project is licensed under **ME😄**.
