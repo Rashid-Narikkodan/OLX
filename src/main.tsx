@@ -1,8 +1,8 @@
-import React from "react";
+import {StrictMode} from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app/App";
-import { Providers } from "./app/providers";
-import "./styles/globals.css";
+import "./styles/index.css";
+// import { Providers } from "./app/providers";
 
 const rootElement = document.getElementById("root");
 
@@ -11,9 +11,9 @@ if (!rootElement) {
 }
 
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <Providers>
+  <StrictMode>
+    {/* <Providers> */}
       <App />
-    </Providers>
-  </React.StrictMode>
+    {/* </Providers> */}
+  </StrictMode>
 );

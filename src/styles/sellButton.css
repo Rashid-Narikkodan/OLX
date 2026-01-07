@@ -1,0 +1,11 @@
+
+.clip-yellow {
+    clip-path: inset(15% 45% 0 0);
+}
+
+.clip-blue {
+    clip-path: inset(0 0 0 55%);
+}
+.clip-green {
+  clip-path: inset(0 0 80% 0);
+}
