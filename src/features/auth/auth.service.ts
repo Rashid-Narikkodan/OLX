@@ -31,28 +31,18 @@ export const completeEmailLinkSignIn = async (
   if (!isSignInWithEmailLink(auth, link)) {
     throw new Error("Invalid email sign-in link");
   }
-
   const email = localStorage.getItem("emailForSignIn");
   if (!email) {
     throw new Error("Email not found in storage");
   }
-
   localStorage.removeItem("emailForSignIn");
   return signInWithEmailLink(auth, email, link);
 };
-
-/* ----------------------------------
-   GOOGLE AUTH
------------------------------------ */
 
 export const signInWithGoogle = (): Promise<UserCredential> => {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider);
 };
-
-/* ----------------------------------
-   PHONE AUTH (OTP)
------------------------------------ */
 
 export const setupRecaptcha = (containerId: string): RecaptchaVerifier => {
   return new RecaptchaVerifier(auth, containerId, {
@@ -66,10 +56,6 @@ export const sendOtpToPhone = (
 ) => {
   return signInWithPhoneNumber(auth, phoneNumber, recaptcha);
 };
-
-/* ----------------------------------
-   LOGOUT
------------------------------------ */
 
 export const logout = (): Promise<void> => {
   return signOut(auth);
