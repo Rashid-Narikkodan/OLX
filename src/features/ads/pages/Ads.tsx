@@ -1,5 +1,6 @@
-import Categories from "@/components/ui/Categories"
+import Categories from "@/features/ads/components/Categories"
 import CategoryCards from "../components/CategoryCards"
+import '@/styles/ads.css'
 const ProductsPage = () => {
   const categories = [
   { id: 1, name: "Cars", imageUrl: "/images/cars.png" },

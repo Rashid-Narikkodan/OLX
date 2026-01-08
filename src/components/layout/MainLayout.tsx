@@ -9,7 +9,7 @@ const MainLayout = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="flex-1 w-full px-3 sm:px-6 py-4 md:py-6">
+      <main className="flex-1 w-full">
         {/* Centered container for responsiveness */}
         <div className="w-full mx-auto">
           <Outlet />

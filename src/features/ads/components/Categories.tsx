@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "../../../components/ui/Button";
 import { Menu } from "lucide-react";
 import type { Category } from "@/types/category";
 
@@ -18,7 +18,7 @@ const date = `${today
 
 
   return (
-    <div className="w-full flex items-center gap-3 px-25 py-2 border-b border-gray-200 overflow-x-auto">
+    <div className="w-full flex items-center gap-3 px-25 py-2 border-b border-gray-200 overflow-x-auto scroll-hidden">
       {/* All Categories Button */}
       <Button className="bg-blue-600 text-white rounded-3xl px-4 py-2 flex items-center gap-2 font-semibold">
         <Menu size={18} />
