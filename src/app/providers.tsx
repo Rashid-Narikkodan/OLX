@@ -1,7 +1,5 @@
-import { ReactNode } from "react";
-import { AuthProvider } from "../context/AuthContext";
-import { FavoritesProvider } from "../context/FavoritesContext";
-import { ThemeProvider } from "../context/ThemeContext";
+import type { ReactNode } from "react";
+import { AuthProvider } from "../context/AuthProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -10,9 +8,7 @@ interface ProvidersProps {
 export const Providers = ({ children }: ProvidersProps) => {
   return (
     <AuthProvider>
-      <FavoritesProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </FavoritesProvider>
+        {children}
     </AuthProvider>
   );
 };

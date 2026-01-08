@@ -1,19 +1,27 @@
 import { Search, Heart, User, MapPin, ChevronDown } from "lucide-react";
 import OLX from "@/assets/icons/OLX.svg";
 import SellButton from "../ui/SellButton";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import AuthPage from "@/features/auth/pages/AuthModal";
+import { useAuth } from "@/hooks/useAuth";
+import { MessageCircleIcon } from "lucide-react"; 
+import Profile from '@/assets/images/profile.png'
+import { Bell } from "lucide-react";
 
 export default function Header() {
-    const placeholders = ["Mobiles", "Bikes", "Cars", "Plots"];
-const [index, setIndex] = useState(0);
+  const placeholders = ["Mobiles", "Bikes", "Cars", "Plots"];
+  const [index, setIndex] = useState(0);
+  const [wannaLogin, setLogin] = useState(false);
 
-useEffect(() => {
-  const id = setInterval(() => {
-    setIndex((prev) => (prev + 1) % placeholders.length);
-  }, 1000); // change every 2s
+  const {user}=useAuth()
 
-  return () => clearInterval(id);
-}, [placeholders.length]);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((prev) => (prev + 1) % placeholders.length);
+    }, 1000); // change every 2s
+
+    return () => clearInterval(id);
+  }, [placeholders.length]);
 
   return (
     <header className="w-full h-18 flex items-center px-3 bg-[#F5FAFF] border-b border-[rgb(229,231,235)]">
@@ -31,10 +39,7 @@ useEffect(() => {
         <span className="hidden sm:inline text-sm whitespace-nowrap">
           Chennai, Tamil Nadu
         </span>
-        <ChevronDown
-          size={20}
-          className="rotate-270 text-gray-500"
-        />
+        <ChevronDown size={20} className="rotate-270 text-gray-500" />
       </div>
 
       {/* Search */}
@@ -45,7 +50,7 @@ useEffect(() => {
           className="flex-1 px-5 text-sm outline-none text-[#1f2937]"
         />
         <button className="w-12 m-1 bg-[#3b82f6] rounded-full text-white flex items-center justify-center hover:bg-[#2563eb]">
-          <Search size={23}/>
+          <Search size={23} />
         </button>
       </div>
 
@@ -56,14 +61,38 @@ useEffect(() => {
           Wishlist
         </button>
 
-        <button className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium">
+        { !user ? <button
+          onClick={() => setLogin(true)}
+          className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium"
+        >
           <User size={22} className="text-blue-800" />
           Login
         </button>
-
+        :<button
+          className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium"
+        >
+          <MessageCircleIcon size={22} className="text-blue-800" />
+          Chat
+        </button>
+        }
+        {user&&
+          <div className="rounded-full bg-gray-500 object-cover">
+            <img src={Profile} alt="" className="rounded-3xl size-12"/>
+        </div>
+        }
         {/* SELL */}
         <SellButton />
+
+        {user&&
+        <button
+          className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium"
+        >
+          <Bell size={22} className="text-blue-800" />
+          Notify
+        </button>
+        }
       </div>
+      {wannaLogin && <AuthPage onClose={() => setLogin(false)} />}
     </header>
   );
 }

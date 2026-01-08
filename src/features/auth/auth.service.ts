@@ -1,18 +1,76 @@
-import {auth} from '@/services/firebase'
+import { auth } from "@/services/firebase";
 import {
-    signInWithEmailAndPassword,
-    signOut,
-    createUserWithEmailAndPassword,
-} from 'firebase/auth';
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  isSignInWithEmailLink,
+  GoogleAuthProvider,
+  signInWithPopup,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  signOut,
+  type UserCredential,
+} from "firebase/auth";
 
-export const SignIn=(email:string,password:string)=>{
-    signInWithEmailAndPassword(auth,email,password)
-}
+/* ----------------------------------
+   EMAIL LINK (PASSWORDLESS)
+----------------------------------- */
 
-export const SignUp=(email:string,password:string)=>{
-    createUserWithEmailAndPassword(auth, email, password)
-}
+const actionCodeSettings = {
+  url: "http://localhost:5173/auth/complete", // update in prod
+  handleCodeInApp: true,
+};
 
-export const SignOut=()=>{
-    signOut(auth)
-}
+export const sendEmailLoginLink = async (email: string): Promise<void> => {
+  await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+  localStorage.setItem("emailForSignIn", email);
+};
+
+export const completeEmailLinkSignIn = async (
+  link: string
+): Promise<UserCredential> => {
+  if (!isSignInWithEmailLink(auth, link)) {
+    throw new Error("Invalid email sign-in link");
+  }
+
+  const email = localStorage.getItem("emailForSignIn");
+  if (!email) {
+    throw new Error("Email not found in storage");
+  }
+
+  localStorage.removeItem("emailForSignIn");
+  return signInWithEmailLink(auth, email, link);
+};
+
+/* ----------------------------------
+   GOOGLE AUTH
+----------------------------------- */
+
+export const signInWithGoogle = (): Promise<UserCredential> => {
+  const provider = new GoogleAuthProvider();
+  return signInWithPopup(auth, provider);
+};
+
+/* ----------------------------------
+   PHONE AUTH (OTP)
+----------------------------------- */
+
+export const setupRecaptcha = (containerId: string): RecaptchaVerifier => {
+  return new RecaptchaVerifier(auth, containerId, {
+    size: "invisible",
+  });
+};
+
+export const sendOtpToPhone = (
+  phoneNumber: string,
+  recaptcha: RecaptchaVerifier
+) => {
+  return signInWithPhoneNumber(auth, phoneNumber, recaptcha);
+};
+
+/* ----------------------------------
+   LOGOUT
+----------------------------------- */
+
+export const logout = (): Promise<void> => {
+  return signOut(auth);
+};
