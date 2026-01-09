@@ -7,13 +7,19 @@ import { useAuth } from "@/hooks/useAuth";
 import { MessageCircleIcon } from "lucide-react"; 
 import Profile from '@/assets/images/profile.png'
 import { Bell } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Categories from "@/features/ads/components/Categories";
+
+//mockdata
+import { categories } from "@/../mock/categories";
+import { logout } from "@/features/auth/auth.service";
 
 export default function Header() {
   const placeholders = ["Mobiles", "Bikes", "Cars", "Plots"];
   const [index, setIndex] = useState(0);
   const [wannaLogin, setLogin] = useState(false);
-
   const {user}=useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -23,7 +29,16 @@ export default function Header() {
     return () => clearInterval(id);
   }, [placeholders.length]);
 
+  const handleClick=()=>{
+    if(user){
+      navigate('/post');
+    }else{
+      setLogin(true)
+    }
+  }
+
   return (
+    <>
     <header className="w-full h-18 flex items-center px-3 bg-[#F5FAFF] border-b border-[rgb(229,231,235)]">
       {/* Logo */}
       <div className="flex items-center mr-4">
@@ -76,23 +91,24 @@ export default function Header() {
         </button>
         }
         {user&&
-          <div className="rounded-full bg-gray-500 object-cover">
+          <div className="rounded-full bg-gray-500 object-cover" onClick={()=>logout()}>
             <img src={Profile} alt="" className="rounded-3xl size-12"/>
         </div>
         }
         {/* SELL */}
-        <SellButton />
+        <SellButton onClick={()=>handleClick()} />
 
         {user&&
         <button
           className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium"
         >
-          <Bell size={22} className="text-blue-800" />
-          Notify
+          <Bell size={22} className="text-gray-900" />
         </button>
         }
       </div>
       {wannaLogin && <AuthPage onClose={() => setLogin(false)} />}
     </header>
-  );
+          <Categories categories={categories} />
+    </>
+  )
 }

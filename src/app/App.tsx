@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 const App = () => {
   return (
     <Providers >
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </Providers>
   )
 };

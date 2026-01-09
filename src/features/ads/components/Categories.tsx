@@ -1,6 +1,6 @@
 import Button from "../../../components/ui/Button";
 import { Menu } from "lucide-react";
-import type { Category } from "@/types/category";
+import type { Category } from "@/types/category.type";
 
 type CategoriesProps = {
   categories: Category[];

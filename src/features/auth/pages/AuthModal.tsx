@@ -25,7 +25,7 @@ const AuthPage = ({ onClose }: AuthPageProps) => {
 
         {/* ================= OPTIONS SCREEN ================= */}
         {mode === "options" && (
-          <GoogleAndPhone setMode={()=>setMode('email')}/>
+          <GoogleAndPhone setMode={()=>setMode('email')} onClose={onClose}/>
         )}
 
         {/* ================= EMAIL SCREEN ================= */}

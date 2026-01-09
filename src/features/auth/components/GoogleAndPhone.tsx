@@ -1,9 +1,17 @@
 import { ChevronLeft, ChevronRight,Smartphone } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
-const GoogleAndPhone = ({setMode}:{setMode:()=>void}) => {
+import { useState } from "react"
+const GoogleAndPhone = ({setMode,onClose}:{setMode:()=>void,onClose:()=>void}) => {
   const { loginWithGoogle }=useAuth()
-  const handleGoogleAuth=()=>{
-    loginWithGoogle()
+  const [error,setError]=useState<string|null>(null)
+  const handleGoogleAuth= async ()=>{
+    try{
+      await loginWithGoogle()
+    }catch(err:unknown){
+      setError(err instanceof Error?err.message:'Google Auth failed')
+    }finally{
+      onClose()
+    }
   }
   return (
     <>
@@ -48,10 +56,11 @@ const GoogleAndPhone = ({setMode}:{setMode:()=>void}) => {
                 <img
                   src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                   className="h-5 w-5"
-                />
+                  />
                 Continue with Google
               </button>
             </div>
+                  {error && <div>{error}</div>}
 
             <div className="my-5 text-center text-sm text-gray-500">OR</div>
 

@@ -119,5 +119,5 @@ export default function OLXFooter() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
