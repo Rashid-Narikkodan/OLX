@@ -1,4 +1,4 @@
-import Button from "../../../components/ui/Button";
+import Button from "./Button";
 import { Menu } from "lucide-react";
 import type { Category } from "@/types/category.type";
 

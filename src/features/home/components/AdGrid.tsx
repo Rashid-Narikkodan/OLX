@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CategoryRow from "./CategoryRow";
 import type { Category } from "@/types/category.type";
-import type { Ad } from "../ad.types";
+import type { Ad } from "@/features/ads/ad.types";
 import { getAdsByCategory } from "@/services/db";
 
 type AdGridProps = {

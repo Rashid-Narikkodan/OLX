@@ -8,7 +8,7 @@ import { MessageCircleIcon } from "lucide-react";
 import Profile from '@/assets/images/profile.png'
 import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Categories from "@/features/ads/components/Categories";
+import Categories from "@/components/ui/Categories";
 
 //mockdata
 import { getCategories } from "@/services/db";

@@ -1,4 +1,4 @@
-import type { Ad } from "../ad.types";
+import type { Ad } from "@/features/ads/ad.types";
 
 type AdCardProps = {
   product: Ad;

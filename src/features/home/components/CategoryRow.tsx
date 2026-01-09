@@ -1,5 +1,5 @@
-import AdCard from "./AdCard";  // your existing Card component
-import type { Ad } from "../ad.types";
+import AdCard from "@/components/ui/AdCard";  // your existing Card component
+import type { Ad } from "@/features/ads/ad.types";
 
 type CategoryRowProps = {
   title: string;
