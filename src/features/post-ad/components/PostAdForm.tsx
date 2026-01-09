@@ -7,15 +7,23 @@ type AdFormState = {
   title: string;
   description: string;
   price: number | "";
+  images:string[]
 };
 
-const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void }) => {
+const PostAdForm = ({
+  category,
+  onClick,
+}: {
+  category: Category;
+  onClick: () => void;
+}) => {
   const [form, setForm] = useState<AdFormState>({
     title: "",
     description: "",
     price: "",
+    images: [""],
   });
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, title: e.target.value }));
@@ -34,6 +42,46 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
       price: value === "" ? "" : Number(value),
     }));
   };
+const handleImageChange = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
+
+  const uploads = Array.from(files).map(async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", 'olx_uploads');
+    formData.append("cloud_name", "dwistahku");
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/dwistahku/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Image upload failed");
+    }
+
+    const data = await res.json();
+    return data.secure_url as string;
+  });
+
+  try {
+    const imageUrls = await Promise.all(uploads);
+    console.log(imageUrls); // store this in form state
+    setForm((prev) => ({
+      ...prev,
+      images: imageUrls.length === 0 ? [''] : imageUrls,
+    }));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,15 +95,16 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
       description: form.description.trim(),
       price: form.price,
       category: category.id, // or category.slug based on your backend
+      images:form.images
     };
 
-    try{
-      const result = await addProduct(adPayload)
-      if(result){
-        navigate(-1)
+    try {
+      const result = await addProduct(adPayload);
+      if (result) {
+        navigate(-1);
       }
-    }catch(err){
-    console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -70,7 +119,10 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
               {category.name}
             </p>
           </div>
-          <span onClick={onClick} className="text-blue-600 text-sm cursor-pointer hover:underline">
+          <span
+            onClick={onClick}
+            className="text-blue-600 text-sm cursor-pointer hover:underline"
+          >
             Change
           </span>
         </div>
@@ -122,6 +174,26 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
                 className="w-full border border-gray-300 rounded-md pl-7 pr-3 py-2 focus:outline-none focus:border-blue-500"
                 placeholder="Enter price"
               />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Images *
+            </label>
+
+            <div className="relative flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:border-blue-500 transition">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                multiple
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+
+              <div className="text-center pointer-events-none">
+                <p className="text-sm text-gray-600">Click to upload image</p>
+                <p className="text-xs text-gray-400 mt-1">JPG, PNG (max 5MB)</p>
+              </div>
             </div>
           </div>
 
