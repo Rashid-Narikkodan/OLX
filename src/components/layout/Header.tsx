@@ -11,8 +11,9 @@ import { useNavigate } from "react-router-dom";
 import Categories from "@/features/ads/components/Categories";
 
 //mockdata
-import { categories } from "@/../mock/categories";
+import { getCategories } from "@/services/db";
 import { logout } from "@/features/auth/auth.service";
+import type { Category } from "@/types/category.type";
 
 export default function Header() {
   const placeholders = ["Mobiles", "Bikes", "Cars", "Plots"];
@@ -20,7 +21,14 @@ export default function Header() {
   const [wannaLogin, setLogin] = useState(false);
   const {user}=useAuth()
   const navigate = useNavigate()
-
+  const [categories,setCategories]=useState<Category[]|null>(null)
+  useEffect(()=>{
+    const fetchCategories=async ()=>{
+      const cats= await getCategories()
+      setCategories(cats)
+    }
+    fetchCategories()
+  },[])
   useEffect(() => {
     const id = setInterval(() => {
       setIndex((prev) => (prev + 1) % placeholders.length);
@@ -108,7 +116,7 @@ export default function Header() {
       </div>
       {wannaLogin && <AuthPage onClose={() => setLogin(false)} />}
     </header>
-          <Categories categories={categories} />
+          {categories&&<Categories categories={categories} />}
     </>
   )
 }

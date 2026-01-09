@@ -1,8 +1,3 @@
-export type SubCategory = {
-  name: string;
-  slug: string;
-};
-
 export type Category = {
   id: string;
   name: string;

@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc,limit } from "firebase/firestore";
 import { db } from "@/services/firebase";
 import type { Category } from "@/types/category.type";
 import type { Ad } from "@/features/ads/ad.types";
@@ -35,4 +35,24 @@ export const addProduct = async (product: Omit<Ad, "id">): Promise<string> => {
     console.error("Error adding product:", error);
     throw new Error("Failed to add product");
   }
+};
+
+
+
+export const getAdsByCategory = async (
+  category: string,
+  max = 4
+): Promise<Ad[]> => {
+  const q = query(
+    collection(db, "products"),
+    where("category", "==", category),
+    limit(max)
+  );
+
+  const snap = await getDocs(q);
+
+  return snap.docs.map((doc) => ({
+    id: doc.id,
+    ...(doc.data() as Omit<Ad, "id">),
+  }));
 };
