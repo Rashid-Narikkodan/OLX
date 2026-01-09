@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Category } from "@/types/category.type";
 import { addProduct } from "@/services/db";
+import { useNavigate } from "react-router-dom";
 
 type AdFormState = {
   title: string;
@@ -14,6 +15,7 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
     description: "",
     price: "",
   });
+  const navigate=useNavigate()
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, title: e.target.value }));
@@ -48,7 +50,10 @@ const PostAdForm = ({ category,onClick }: { category: Category,onClick:()=>void 
     };
 
     try{
-      await addProduct(adPayload)
+      const result = await addProduct(adPayload)
+      if(result){
+        navigate(-1)
+      }
     }catch(err){
     console.log(err)
     }
