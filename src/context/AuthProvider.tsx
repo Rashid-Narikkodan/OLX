@@ -8,6 +8,7 @@ import type { AuthContextType } from "@/features/auth/auth.types";
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [openLogin, setLogin] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -21,6 +22,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value: AuthContextType = {
     user,
     loading,
+    openLogin,
+    setLogin: (val: boolean) => setLogin(val),
     logout: logoutService,
     loginWithGoogle:loginWithGoogle,
     loginWithEmail: sendEmailLoginLink ,

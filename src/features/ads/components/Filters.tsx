@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { Filter } from "../ad.types";
-import { getCategories } from "@/services/db";
+import { getCategories } from "@/services/category.service";
 
 const Filters = ({ onChange }:{onChange:(filter:Filter)=>void}) => {
   const [openCat, setOpenCat] = useState(true);

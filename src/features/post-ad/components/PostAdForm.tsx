@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Category } from "@/types/category.type";
-import { addProduct } from "@/services/db";
+import { addProduct } from "@/features/ads/ad.service";
 import { useNavigate } from "react-router-dom";
 type AdFormState = {
   title: string;

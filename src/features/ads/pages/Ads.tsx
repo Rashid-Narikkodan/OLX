@@ -4,7 +4,7 @@ import type { Ad, Filter } from "../ad.types";
 import AdsGrid from "../components/AdsGrid";
 import AdsHeader from "../components/AdsHeader";
 import Filters from "../components/Filters";
-import { getAds } from "@/services/db";
+import { getAds } from "../ad.service";
 
 const Ads = () => {
   const [params, setParams] = useSearchParams();

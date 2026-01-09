@@ -1,6 +1,6 @@
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "@/services/db";
+import { getCategories } from "@/services/category.service";
 import { useEffect, useState } from "react";
 import type { Category } from "@/types/category.type";
 import PostAdForm from "../components/PostAdForm";

@@ -1,7 +1,7 @@
 import CategoryCards from "../components/CategoryCards"
 import '@/styles/ads.css'
 import AdGrid from "../components/AdGrid"
-import { getCategories } from "@/services/db"
+import { getCategories } from "@/services/category.service"
 import { useEffect, useState } from "react"
 import type { Category } from "@/types/category.type"
 const ProductsPage = () => {

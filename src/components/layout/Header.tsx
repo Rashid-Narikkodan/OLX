@@ -9,18 +9,20 @@ import Profile from '@/assets/images/profile.png'
 import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Categories from "@/components/ui/Categories";
-import { getCategories } from "@/services/db";
-import { logout } from "@/features/auth/auth.service";
+import { getCategories } from "@/services/category.service";
 import type { Category } from "@/types/category.type";
+import ProfileModal from "@/features/profile/components/ProfileModal";
+import { logout } from "@/features/auth/auth.service";
 
 export default function Header() {
   const [index, setIndex] = useState(0);
-  const [wannaLogin, setLogin] = useState(false);
+  const { setLogin, openLogin } = useAuth()
   const [placeholders, setPlaceholder] = useState<string[]>(['Somthing']);
   const {user}=useAuth()
   const navigate = useNavigate()
   const [categories,setCategories]=useState<Category[]|null>(null)
   const [q,setQ]=useState('')
+  const [openProfile,setOpenProfile]=useState(false)
   useEffect(()=>{
     const fetchCategories=async ()=>{
       const cats= await getCategories()
@@ -40,6 +42,13 @@ export default function Header() {
   const handleClick=()=>{
     if(user){
       navigate('/post');
+    }else{
+      setLogin(true)
+    }
+  }
+  const handleClickOnWishlist=()=>{
+    if(user){
+      navigate('/wishlist')
     }else{
       setLogin(true)
     }
@@ -79,7 +88,7 @@ export default function Header() {
       </form>
         
       <div className="flex items-center lg:gap-8 gap-2">
-        <button className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium">
+        <button onClick={handleClickOnWishlist} className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium">
           <Heart size={22} className="text-blue-800" />
           Wishlist
         </button>
@@ -99,7 +108,7 @@ export default function Header() {
         </button>
         }
         {user&&
-          <div className="rounded-full bg-gray-500 object-cover" onClick={()=>logout()}>
+          <div className="rounded-full bg-gray-500 object-cover" onClick={()=>setOpenProfile(true)}>
             <img src={Profile} alt="" className="rounded-3xl size-12"/>
         </div>
         }
@@ -113,7 +122,8 @@ export default function Header() {
         </button>
         }
       </div>
-      {wannaLogin && <AuthPage onClose={() => setLogin(false)} />}
+      {openLogin && <AuthPage onClose={() => setLogin(false)} />}
+      {openProfile && <ProfileModal onClose={() => setOpenProfile(false)} onLogout={()=>{ logout(); setOpenProfile(false) ;navigate('/')}} />}
     </header>
           {categories&&<Categories categories={categories} />}
     </>

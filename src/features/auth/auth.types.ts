@@ -7,6 +7,8 @@ export interface AuthPageProps{
 export type AuthContextType = {
   user: User | null;
   loading: boolean;
+  openLogin:boolean;
+  setLogin:(val:boolean)=>void
   loginWithGoogle: () => Promise<UserCredential>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;

@@ -1,6 +1,7 @@
 import Button from "./Button";
 import { Menu } from "lucide-react";
 import type { Category } from "@/types/category.type";
+import { useNavigate } from "react-router-dom";
 
 type CategoriesProps = {
   categories: Category[];
@@ -8,7 +9,6 @@ type CategoriesProps = {
 
 const Categories = ({ categories }: CategoriesProps) => {
 const today = new Date();
-
 const date = `${today
   .getDate()
   .toString()
@@ -17,6 +17,7 @@ const date = `${today
 })}, ${today.getFullYear()}`;
 
 
+const navigate = useNavigate()
   return (
     <div className="w-full flex items-center gap-3 px-25 py-2 border-b border-gray-200 overflow-x-auto scroll-hidden">
       {/* All Categories Button */}
@@ -28,6 +29,7 @@ const date = `${today
       {/* Category Buttons */}
       {categories.map((category) => (
         <Button
+        onClick={()=>navigate(`/ads?cat=${category.id}`)}
           key={category.id}
           className="rounded-3xl px-3 py-1 flex items-center border-gray-300 border">
           {category.name}
