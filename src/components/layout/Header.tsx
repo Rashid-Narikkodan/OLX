@@ -9,30 +9,30 @@ import Profile from '@/assets/images/profile.png'
 import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Categories from "@/components/ui/Categories";
-
-//mockdata
 import { getCategories } from "@/services/db";
 import { logout } from "@/features/auth/auth.service";
 import type { Category } from "@/types/category.type";
 
 export default function Header() {
-  const placeholders = ["Mobiles", "Bikes", "Cars", "Plots"];
   const [index, setIndex] = useState(0);
   const [wannaLogin, setLogin] = useState(false);
+  const [placeholders, setPlaceholder] = useState<string[]>(['Somthing']);
   const {user}=useAuth()
   const navigate = useNavigate()
   const [categories,setCategories]=useState<Category[]|null>(null)
+  const [q,setQ]=useState('')
   useEffect(()=>{
     const fetchCategories=async ()=>{
       const cats= await getCategories()
       setCategories(cats)
+      setPlaceholder(cats.map((c)=>c.name))
     }
     fetchCategories()
   },[])
   useEffect(() => {
     const id = setInterval(() => {
       setIndex((prev) => (prev + 1) % placeholders.length);
-    }, 1000); // change every 2s
+    }, 1500);
 
     return () => clearInterval(id);
   }, [placeholders.length]);
@@ -48,10 +48,9 @@ export default function Header() {
   return (
     <>
     <header className="w-full h-18 flex items-center px-3 bg-[#F5FAFF] border-b border-[rgb(229,231,235)]">
-      {/* Logo */}
-      <div className="flex items-center mr-4">
+      <div onClick={()=>navigate('/')} className="flex items-center mr-4">
         <img
-          src={OLX} // placeholder
+          src={OLX}
           alt="OLX"
           className="h-12 w-auto"
         />
@@ -65,19 +64,20 @@ export default function Header() {
         <ChevronDown size={20} className="rotate-270 text-gray-500" />
       </div>
 
-      {/* Search */}
-      <div className="flex flex-1 mx-6 h-12 bg-white border border-[#d1d5db] rounded-full">
+        
+      <form onSubmit={(e)=>{e.preventDefault();navigate(`/ads?q=${q}`)}} className="flex flex-1 mx-6 h-12 bg-white border border-[#d1d5db] rounded-full">
         <input
           type="text"
           placeholder={`Search "${placeholders[index]}"`}
+          value={q}
+          onChange={(e)=>setQ(e.target.value)}
           className="flex-1 px-5 text-sm outline-none text-[#1f2937]"
-        />
-        <button className="w-12 m-1 bg-[#3b82f6] rounded-full text-white flex items-center justify-center hover:bg-[#2563eb]">
+          />
+        <button type="submit" className="w-12 m-1 bg-[#3b82f6] rounded-full text-white flex items-center justify-center hover:bg-[#2563eb]">
           <Search size={23} />
         </button>
-      </div>
-
-      {/* Right actions */}
+      </form>
+        
       <div className="flex items-center lg:gap-8 gap-2">
         <button className="flex flex-col items-center text-[#1f2937] hover:text-[#111827] text-xs font-medium">
           <Heart size={22} className="text-blue-800" />
@@ -103,7 +103,6 @@ export default function Header() {
             <img src={Profile} alt="" className="rounded-3xl size-12"/>
         </div>
         }
-        {/* SELL */}
         <SellButton onClick={()=>handleClick()} />
 
         {user&&

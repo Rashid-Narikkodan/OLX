@@ -6,3 +6,8 @@ export interface Ad {
   price: number;
   images:string[]
 }
+ export type Filter={
+      category: string|null,
+      min: number|null,
+      max: number|null,
+    }
