@@ -19,7 +19,8 @@ const ProductsPage = () => {
       fetchCategories()
   },[])
   return (
-    <div>
+    <div className="px-30">
+      <div className="bg-gray-100 mx-10 h-70 rounded-2xl my-5"></div>
       {categories ? <CategoryCards categories={categories}/> : <div>{error}</div> }
       {categories && <AdGrid categories={categories}/> }
     </div>

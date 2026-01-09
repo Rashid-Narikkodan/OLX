@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, addDoc,limit } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc,limit, serverTimestamp } from "firebase/firestore";
 import { db } from "@/services/firebase";
 import type { Category } from "@/types/category.type";
 import type { Ad } from "@/features/ads/ad.types";
@@ -27,7 +27,7 @@ export const addProduct = async (product: Omit<Ad, "id">): Promise<string> => {
   try {
     const docRef = await addDoc(collection(db, "products"), {
       ...product,
-      createdAt: new Date(),
+      createdAt: serverTimestamp(),
       isActive: true, // default
     });
     return docRef.id; // return generated product ID

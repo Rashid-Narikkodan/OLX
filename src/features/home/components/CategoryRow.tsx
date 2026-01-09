@@ -1,13 +1,15 @@
 import AdCard from "@/components/ui/AdCard";  // your existing Card component
 import type { Ad } from "@/features/ads/ad.types";
+import LoadingRing from "@/components/ui/Loading";
 
 type CategoryRowProps = {
   title: string;
-  products: Ad[];
+  ads: Ad[];
   exploreLink?: string;
+  loading:boolean
 };
 
-const CategoryRow = ({ title, products, exploreLink }: CategoryRowProps) => {
+const CategoryRow = ({ title, ads, exploreLink, loading }: CategoryRowProps) => {
   return (
     <div className="mb-8">
       {/* Header */}
@@ -21,11 +23,14 @@ const CategoryRow = ({ title, products, exploreLink }: CategoryRowProps) => {
       </div>
 
       {/* Scrollable row */}
-      <div className="flex space-x-4 overflow-x-auto px-2">
-        {products.map((product) => (
-          <AdCard key={product.id} product={product} />
-        ))}
-      </div>
+<div className={`${loading?'flex justify-center items-center':"grid grid-cols-2 md:grid-cols-4 gap-4"}`}>
+  {!loading?ads.map(ad => (
+    <AdCard key={ad.id} product={ad}/>
+  )):
+  <LoadingRing />
+  }
+</div>
+
     </div>
   );
 };

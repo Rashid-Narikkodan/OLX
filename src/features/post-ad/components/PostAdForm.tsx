@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Category } from "@/types/category.type";
 import { addProduct } from "@/services/db";
 import { useNavigate } from "react-router-dom";
-
 type AdFormState = {
   title: string;
   description: string;
@@ -81,8 +80,6 @@ const handleImageChange = async (
     console.error(err);
   }
 };
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -204,6 +201,7 @@ const handleImageChange = async (
             >
               Post Now
             </button>
+            
           </div>
         </form>
       </div>
