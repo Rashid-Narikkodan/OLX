@@ -121,7 +121,5 @@ export const getAds = async (
     return title.includes(term) || desc.includes(term) || cat.includes(term)
   });
 }
-
-
   return ads;
 };
