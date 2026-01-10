@@ -10,6 +10,7 @@ type AdCardProps = {
 
 const AdCard = ({ product }: AdCardProps) => {
   const image = product.images?.[0] || "/placeholder.png";
+  console.log(product.images[0])
   const navigate = useNavigate()
   const {setLogin,user}=useAuth()
   const {toggleWishlist,isWishlisted}=useWish()

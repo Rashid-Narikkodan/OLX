@@ -7,6 +7,7 @@ import {
   Settings,
   LogOut
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type ProfileProps={
     onClose:()=>void
@@ -14,6 +15,7 @@ type ProfileProps={
 }
 
 const ProfileModal = ({ onClose, onLogout }:ProfileProps) => {
+  const navigate=useNavigate()
   return (
     // Overlay to detect clicks outside
     <div className="fixed inset-0 z-50 bg-transparent" onClick={onClose}>
@@ -42,7 +44,7 @@ const ProfileModal = ({ onClose, onLogout }:ProfileProps) => {
 
         {/* Menu List */}
         <div className="flex flex-col py-2">
-          <button className="flex items-center gap-4 px-5 py-3 hover:bg-gray-100 transition-colors text-[#002f34]">
+          <button onClick={()=>navigate('/myads')} className="flex items-center gap-4 px-5 py-3 hover:bg-gray-100 transition-colors text-[#002f34]">
             <FileText size={20} /> 
             <span className="text-[15px]">My ADS</span>
           </button>
