@@ -44,7 +44,7 @@ const ProfileModal = ({ onClose, onLogout }:ProfileProps) => {
 
         {/* Menu List */}
         <div className="flex flex-col py-2">
-          <button onClick={()=>navigate('/myads')} className="flex items-center gap-4 px-5 py-3 hover:bg-gray-100 transition-colors text-[#002f34]">
+          <button onClick={()=>{navigate('/myads');onClose?.()}} className="flex items-center gap-4 px-5 py-3 hover:bg-gray-100 transition-colors text-[#002f34]">
             <FileText size={20} /> 
             <span className="text-[15px]">My ADS</span>
           </button>

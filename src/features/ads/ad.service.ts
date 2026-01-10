@@ -1,4 +1,4 @@
-import { collection,type QueryConstraint,deleteDoc, getDocs,orderBy, doc, where, addDoc,limit, serverTimestamp, query, getDoc } from "firebase/firestore";
+import { collection,type QueryConstraint,deleteDoc,updateDoc, getDocs,orderBy, doc, where, addDoc,limit, serverTimestamp, query, getDoc } from "firebase/firestore";
 import { db } from "@/services/firebase";
 import type { Ad, Filter } from "@/features/ads/ad.types";
 
@@ -131,7 +131,6 @@ export const getAdsByUser = async (userId: string): Promise<Ad[]> => {
   );
 
   const snap = await getDocs(q);
-  console.log(snap)
   return snap.docs.map((doc) => ({
     id: doc.id,
     ...(doc.data() as Omit<Ad, "id">),
@@ -142,6 +141,17 @@ export const deleteAdById = async (id: string): Promise<void> => {
   if (!id) throw new Error("Ad ID is required");
 
   const adRef = doc(db, "products", id);
-  console.log(adRef)
   return await deleteDoc(adRef);
+};
+
+export const updateAdById = async (id: string, payload: Omit<Ad, "id">) => {
+  try {
+    const adRef = doc(db, "products", id); // reference to the document
+    await updateDoc(adRef, payload); // update fields in payload
+    console.log("from service",payload)
+    return true;
+  } catch (err) {
+    console.error("Failed to update ad:", err);
+    return false;
+  }
 };

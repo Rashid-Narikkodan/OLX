@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { Category } from "@/types/category.type";
-import { addProduct } from "@/features/ads/ad.service";
+import { addProduct,updateAdById } from "@/features/ads/ad.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+
 
 type AdFormState = {
   title: string;
@@ -14,16 +15,19 @@ type AdFormState = {
 const PostAdForm = ({
   category,
   onClick,
+  initialData
 }: {
   category: Category;
   onClick: () => void;
+  initialData?: AdFormState & {id:string};
 }) => {
-  const [form, setForm] = useState<AdFormState>({
-    title: "",
-    description: "",
-    price: "",
-    images: [],
-  });
+const [form, setForm] = useState<AdFormState>({
+  title: initialData?.title || "",
+  description: initialData?.description || "",
+  price: initialData?.price || "",
+  images: initialData?.images || [],
+});
+
   const [isUploading, setIsUploading] = useState(false); // Track upload status
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -87,39 +91,36 @@ const PostAdForm = ({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
+  if (!form.title || !form.description || form.price === "" || form.images.length === 0) {
+    alert("Please fill all fields and upload at least one image");
+    return;
+  }
 
-    // Prevent submission if images are still uploading
-    if (isUploading) {
-      alert("Please wait for images to finish uploading");
-      return;
-    }
-
-    if (!form.title || !form.description || form.price === "" || form.images.length === 0) {
-      alert("Please fill all fields and upload at least one image");
-      return;
-    }
-
-    const adPayload = {
-      title: form.title.trim(),
-      description: form.description.trim(),
-      price: form.price,
-      category: category.id,
-      images: form.images, // Now this will contain the URLs
-      seller: user ? user.uid : "unknown",
-    };
-
-    console.log("Payload being sent:", adPayload);
-
-    try {
-      const result = await addProduct(adPayload);
-      if (result) {
-        navigate("/"); // Navigate on success
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const payload = {
+    title: form.title.trim(),
+    description: form.description.trim(),
+    price: form.price,
+    category: category.id,
+    images: form.images,
+    seller: user ? user.uid : "unknown",
   };
+
+
+  try {
+    if (initialData) {
+      // Editing existing ad
+      await updateAdById(initialData.id, payload);
+    } else {
+      // Adding new ad
+      await addProduct(payload);
+    }
+    navigate(-1);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="fixed inset-0 z-50 bg-white overflow-auto">
@@ -219,7 +220,7 @@ const PostAdForm = ({
               disabled={isUploading}
               className={`w-full text-white py-3 rounded-md font-semibold transition ${isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
             >
-              {isUploading ? "Uploading..." : "Post Now"}
+              {isUploading ? "Uploading..." : (initialData?"Edit Now":"Post Now")}
             </button>
           </div>
         </form>

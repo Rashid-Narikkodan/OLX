@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 import type { Ad } from "../ad.types";
-import { getAdsByUser, deleteAdById } from "@/features/ads/ad.service";
+import { getAdsByUser, deleteAdById, getAdById } from "@/features/ads/ad.service";
+import PostAdForm from "@/features/post-ad/components/PostAdForm";
+import { getCategoryById } from "@/services/category.service";
+import type { Category } from "@/types/category.type";
 
 const MyAds = () => {
   const { user } = useAuth();
   const [ads, setAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editData, setEditData] = useState<{data:Ad,category:Category}|null>(null);
 
   useEffect(() => {
     const fetchMyAds = async () => {
@@ -45,7 +49,10 @@ const handleDelete = async (id: string) => {
   };
   const handleEdit=async(id:string)=>{
     try{
-      console.log(id)
+      const data = await getAdById(id)
+      const category = await getCategoryById(data.category)
+      if(!category) throw new Error('category not found')
+      setEditData({data,category})
     }catch(erro){
       console.log(erro)
     }
@@ -106,6 +113,7 @@ const handleDelete = async (id: string) => {
                   <button onClick={()=>handleEdit(ad.id)} className="flex-1 sm:w-32 px-4 py-2 border-2 border-[#002f34] text-[#002f34] font-bold rounded hover:bg-gray-50 transition-colors">
                     Edit
                   </button>
+                  {editData && <PostAdForm category={editData.category} onClick={()=>{}} initialData={editData.data}/> }
                   <button onClick={()=>handleDelete(ad.id)} className="flex-1 sm:w-32 px-4 py-2 text-red-600 font-bold hover:bg-red-50 rounded transition-colors">
                     Delete
                   </button>
